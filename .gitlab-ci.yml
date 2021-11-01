@@ -26,12 +26,15 @@ install_dependencies:
         - yarn.lock
     paths:
       - node_modules
+  variables:
+    env: prod
+    REACT_APP_WEBSITE_PERFIX: "[branch=$CI_COMMIYT_BRANCH]"
 
 build_staging:
   extends: install_dependencies
   variables:
     env: staging
-    REACT_APP_WEBSITE_PREFIX: "[staging] "
+    REACT_APP_WEBSITE_PREFIX: "[branch=$CI_COMMIT_BRANCH]"
     PUBLIC_URL: "/$CI_COMMIT_BRANCH"
 
 deploy_staging:
