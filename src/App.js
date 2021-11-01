@@ -7,9 +7,8 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 	<h1>Test of revert</h1>
-<p>
-Third
-Edit <code>src/App.js</code> and save to reload.
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
