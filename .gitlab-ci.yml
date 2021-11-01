@@ -48,7 +48,9 @@ deploy_prod:
   stage: deploy
   script:
     - cp -r build_$env $docker_html_path/test-app/${env}_$CI_COMMIT_SHA
-    - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version || true
+   # - cp -Pv $docker_html_path/$deploy_subfolder $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version || true
+    # Ссылка на предыдущую папку, которая ссылается на ранее /var/www/html {Предыдущая версия прода}
+    - ln -fsnv $docker_html_path/test-app/${env}_$CI_COMMIT_BEFORE_SHA $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version || true
   only:
     - master
 
@@ -74,6 +76,15 @@ revert:
   stage: revert
   when: manual
   script:
-    - cp -Pv --remove-destination $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
+    #- cp -Pv --remove-destination $docker_html_path/test-app/$CI_COMMIT_SHA/prev-version $docker_html_path/html
+    - rm $docker_html_path/$deploy_subfolder
+    - cp -Pv $docker_html_path/test-app/${env}_$CI_COMMIT_SHA/prev-version $docker_html_path/html
 
+
+revert_previous:
+  stage: revert
+  when: manual
+  script:
+    - rm $docker_html_path/$deploy_subfolder
+    - cp -Pv $docker_html_path/test-app/${env}_$CI_COMMIT_BEFORE_SHA/prev-version $docker_html_path/$deploy_subfolder
 
